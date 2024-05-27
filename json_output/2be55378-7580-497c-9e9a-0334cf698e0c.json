@@ -1,0 +1,14 @@
+{
+    "serviceId": "lic-reestr",
+    "requestId": "2be55378-7580-497c-9e9a-0334cf698e0c",
+    "requestType": "EPGU",
+    "updateTimestamp": "2024-05-24 18:34:36.115",
+    "responseContent": {
+        "serviceStatus": "4",
+        "attachments": [
+            {
+                "path": "/новый/путь/к/вложению1.zip"
+            }
+        ]
+    }
+}
