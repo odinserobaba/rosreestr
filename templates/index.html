@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <title>Dataset Viewer</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Dataset Viewer</h1>
+      <form id="filterForm" class="mb-4">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="d_z">D_z</label>
+            <select class="form-control" id="d_z" name="d_z">
+              <option value="">All</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="short_name">Short Name</label>
+            <select class="form-control" id="short_name" name="short_name">
+              <option value="">All</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="applyFilters()">
+          Apply Filters
+        </button>
+      </form>
+      <div id="tableContainer"></div>
+    </div>
+
+    <script>
+      async function applyFilters() {
+        const form = document.getElementById("filterForm");
+        const formData = new FormData(form);
+        const queryParams = new URLSearchParams(formData).toString();
+        const response = await fetch(`/filter?${queryParams}`);
+        const tableHtml = await response.text();
+        document.getElementById("tableContainer").innerHTML = tableHtml;
+      }
+
+      async function populateFilters() {
+        const response = await fetch("/filters");
+        const data = await response.json();
+        const d_zSelect = document.getElementById("d_z");
+        const shortNameSelect = document.getElementById("short_name");
+
+        data.d_z.forEach((value) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          d_zSelect.appendChild(option);
+        });
+
+        data.short_name.forEach((value) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          shortNameSelect.appendChild(option);
+        });
+      }
+
+      window.onload = () => {
+        applyFilters();
+        populateFilters();
+      };
+    </script>
+  </body>
+</html>
